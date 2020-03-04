@@ -1,10 +1,11 @@
 from subprocess import run, PIPE, Popen
+import subprocess
 import sys
 from crypt import crypt, mksalt, METHOD_SHA512
 
 def create(name, groups, password):
     password = crypt(password, mksalt(METHOD_SHA512))
-    user = run([ 'useradd', '-p', password, '-G', _str(groups),  name], stdout=PIPE, stderr=PIPE)
+    user = subprocess.run([ 'useradd', '-p', password, '-G', _str(groups),  name], stdout=PIPE, stderr=PIPE)
     status = int(user.returncode)
     if status == 6:
         print('Group does not exist')
@@ -14,10 +15,11 @@ def create(name, groups, password):
         print('User created')
     else:
         print('Something went wrong')
+        print(status)
 def update(name, groups, password):
     pass
 def remove(name):
-    user = run(['userdel', '-r', name], stdout=PIPE, stderr=PIPE)
+    user = subprocess.run(['userdel', '-r', name], stdout=PIPE, stderr=PIPE)
     print(type(user.returncode))
     status =int(user.returncode)
     print(status)
