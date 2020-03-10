@@ -4,7 +4,9 @@ import sys
 from crypt import crypt, mksalt, METHOD_SHA512
 
 def create(name, groups, password):
+    print(password)
     password = crypt(password, mksalt(METHOD_SHA512))
+    print(password)
     user = subprocess.run([ 'useradd', '-p', password, '-G', _str(groups),  name], stdout=PIPE, stderr=PIPE)
     status = int(user.returncode)
     if status == 6:
